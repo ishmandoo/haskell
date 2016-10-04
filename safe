@@ -1,0 +1,13 @@
+main = print $ bfs 0 node2
+  where
+    node0 = Node "node0" [] Nothing
+    node1 = Node "node1" [node0] Nothing
+    node2 = Node "node2" [node1] Nothing
+
+data Node = Node String [Node] (Maybe Int) deriving Show
+
+bfs :: Int -> Node -> Node
+bfs i (Node name adj (Nothing)) =
+  (Node name (map (bfs (i+1))) (Just i))
+bfs _ (Node name adj (Just i)) =
+  (Node name adj (Just i))
