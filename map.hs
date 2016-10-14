@@ -1,4 +1,4 @@
-main = print $ replaceTile myMap 1 1 Forest
+main = print $ makePath myMap 1 3
   where
     myMap = Map [[Blank, Blank, Blank, Blank],[Blank, Blank, Blank, Blank],[Blank, Blank, Blank, Blank],[Blank, Blank, Blank, Blank]]
 
@@ -17,20 +17,9 @@ instance Show Tile where
   show Blank = "b"
 
 makePath :: Map -> Int -> Int -> Map
-makePath (Map tiles) x y = (Map tiles)
-
---replace :: Map -> Int -> Int -> Tile -> Map
---replace (Map a:as) x y new | (y == (length as)) = ((fst split) ++ [new] ++ (tail (snd split))):as
---  where
---    split = splitAt x a
---replace (Map (a:as)) x y new = a:(replace (Map as) x y new)
-
-
---replace :: Map -> Int -> Int -> Tile -> Map
---replace (Map tiles) x y tile = Map ((fst split_rows) ++ ((fst split_row) ++ [tile] ++ (tail (snd split_row))) ++ (tail (snd split_rows)))
---  where
---    split_row = splitAt x (head (snd split_rows))
---    split_rows = splitAt y tiles
+makePath (Map tiles) x y
+  | (y == 0) = (replaceTile (Map tiles) x y Path)
+  | otherwise = makePath (replaceTile (Map tiles) x y Path) x (y-1)
 
 replace :: [a] -> Int -> a -> [a]
 replace [] _ _ = []
