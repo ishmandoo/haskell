@@ -106,10 +106,8 @@ filter f (a:|as) =
 -- Elegance: 1 mark
 -- Total: 7
 append :: List a -> List a -> List a
-append Nil Nil = Nil
-append as Nil = as
 append Nil bs = bs
-append as (b:|bs) = append (as:|b) bs
+append (a:|as) bs = append as (a:|bs)
 
 -- Exercise 7
 -- Relative Difficulty: 5
