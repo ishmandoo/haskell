@@ -6,6 +6,12 @@ toDigits :: Int -> [Int]
 toDigits 0 = []
 toDigits x = toDigits (x `div` 10) ++ [x `mod` 10]
 
+(+++) :: String -> String -> String
+"" +++ "" = ""
+a +++ "" = a
+"" +++ a = a
+a +++ b = a ++ " " ++ b
+
 digitGroups ::Int -> [(Int, Int, Int)]
 digitGroups n = digitGroups' $ reverse $ toDigits $ n
 
@@ -16,9 +22,7 @@ digitGroups' (a:[]) = (0,0,a):[]
 digitGroups' [] = []
 
 groupToWords :: (Int, Int, Int) -> String -> String
-groupToWords (0,0,0)  _ = ""
-groupToWords digits "" = (toWords3 digits)
-groupToWords digits suffix = (toWords3 digits) ++ " " ++ suffix
+groupToWords digits suffix = (toWords3 digits) +++ suffix
 
 toWords :: Int -> String
 toWords 0 = "zero"
@@ -27,6 +31,7 @@ toWords n = intercalate " " (filter (\a -> a /= "") (reverse (zipWith groupToWor
 toWords3 :: (Int, Int, Int) -> String
 toWords3 (0,a,b) = toWords2 (a,b)
 toWords3 (a,b,c) = (toWords1 a) ++ " hundred " ++ (toWords2 (b,c))
+--toWords3 (a,b,c) = (toWords1 a) +++ "hundred" +++ (toWords2 (b,c))
 
 toWords2 :: (Int, Int) -> String
 toWords2 (0,a) = toWords1 a
@@ -37,14 +42,14 @@ toWords2 (1,3) = "thirteen"
 toWords2 (1,5) = "fifteen"
 toWords2 (1,8) = "eighteen"
 toWords2 (1,a) = (toWords1 a) ++ "teen"
-toWords2 (2,a) = "twenty " ++ (toWords1 a) 
-toWords2 (3,a) = "thirty " ++ (toWords1 a) 
-toWords2 (4,a) = "fourty " ++ (toWords1 a) 
-toWords2 (5,a) = "fifty " ++ (toWords1 a) 
-toWords2 (6,a) = "sixty " ++ (toWords1 a) 
-toWords2 (7,a) = "seventy " ++ (toWords1 a) 
-toWords2 (8,a) = "eighty " ++ (toWords1 a) 
-toWords2 (9,a) = "ninety " ++ (toWords1 a) 
+toWords2 (2,a) = "twenty" +++ (toWords1 a) 
+toWords2 (3,a) = "thirty" +++ (toWords1 a) 
+toWords2 (4,a) = "fourty" +++ (toWords1 a) 
+toWords2 (5,a) = "fifty" +++ (toWords1 a) 
+toWords2 (6,a) = "sixty" +++ (toWords1 a) 
+toWords2 (7,a) = "seventy" +++ (toWords1 a) 
+toWords2 (8,a) = "eighty" +++ (toWords1 a) 
+toWords2 (9,a) = "ninety" +++ (toWords1 a) 
 
 toWords1 :: Int -> String
 toWords1 0 = ""
