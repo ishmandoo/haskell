@@ -3,7 +3,7 @@ import Data.List
 suffixes = ["" ,"thousand", "million", "billion", "trillion"]
 
 toDigits :: Int -> [Int]
-toDigits 0 = [0]
+toDigits 0 = []
 toDigits x = toDigits (x `div` 10) ++ [x `mod` 10]
 
 digitGroups ::Int -> [(Int, Int, Int)]
@@ -15,13 +15,14 @@ digitGroups' (a:b:[]) = (0,b,a):[]
 digitGroups' (a:[]) = (0,0,a):[]
 digitGroups' [] = []
 
-groupToWords :: ((Int, Int, Int), String) -> String
-groupToWords ((0,0,0), _) = ""
-groupToWords (digits, suffix) = (toWords3 digits) ++ " " ++ suffix
+groupToWords :: (Int, Int, Int) -> String -> String
+groupToWords (0,0,0)  _ = ""
+groupToWords digits "" = (toWords3 digits)
+groupToWords digits suffix = (toWords3 digits) ++ " " ++ suffix
 
 toWords :: Int -> String
 toWords 0 = "zero"
-toWords n = intercalate " " (reverse (map groupToWords (zip (digitGroups n) suffixes)))
+toWords n = intercalate " " (filter (\a -> a /= "") (reverse (zipWith groupToWords  (digitGroups n) suffixes)))
 
 toWords3 :: (Int, Int, Int) -> String
 toWords3 (0,a,b) = toWords2 (a,b)
